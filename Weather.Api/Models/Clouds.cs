@@ -2,6 +2,7 @@
 {
     public class Clouds
     {
-        public int all { get; set; } = 123;
+        public int id { get; set; }
+        public int all { get; set; }
     }
 }

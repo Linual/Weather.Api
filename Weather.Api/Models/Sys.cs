@@ -1,11 +1,15 @@
-﻿namespace Weather.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Weather.Api.Models
 {
     public class Sys
     {
-        public int type { get; set; } = 16;
-        public int id { get; set; } = 1;
-        public string country { get; set; } = "RU";
-        public int sunrise { get; set; } = 61;
-        public int sunset { get; set; } = 21;
+        [Key]
+        public int SysId { get; set; }
+        public int type { get; set; }
+        public int id { get; set; }
+        public string country { get; set; }
+        public int sunrise { get; set; }
+        public int sunset { get; set; }
     }
 }

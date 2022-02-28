@@ -10,6 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Weather.Api.Services;
+using AutoMapper;
+using Weather.Api.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Weather.Api
 {
@@ -25,8 +29,11 @@ namespace Weather.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DataContext>(x => x.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IWeatherService, WeatherService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

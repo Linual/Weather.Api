@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Weather.Api.Dtos.WeatherInfo;
 using Weather.Api.Models;
 
 namespace Weather.Api.Services
 {
     public interface IWeatherService
     {
-        WeatherModel GetCurrectWeather();
-        List<WeatherModel> AddCurrentWeather(WeatherModel newWeather);
-        List<WeatherModel> GetWeatherPerDay();
-        List<WeatherModel> GetWeatherPerWeek();
-        List<WeatherModel> GetWeatherPerMonth();
+        Task<ServiceResponse<GetWeatherDto>> GetCurrectWeather(string city);
+        Task<ServiceResponse<List<GetWeatherDto>>> AddCurrentWeather(AddWeatherDto newWeather);
+        Task<ServiceResponse<List<GetWeatherDto>>> GetWeatherPerDay(string city);
+        Task<ServiceResponse<List<GetWeatherDto>>> GetWeatherPerWeek(string city);
+        Task<ServiceResponse<List<GetWeatherDto>>> GetWeatherPerMonth(string city);
     }
 }

@@ -9,37 +9,48 @@ using System.Net;
 namespace Weather.Api.Controllers
 {
     using System.Linq;
+    using Weather.Api.Dtos.WeatherInfo;
+    using Weather.Api.Services;
+
     [ApiController]
     [Route("[controller]")]
     public class WeatherInfoController : ControllerBase
     {
-        private static List<WeatherModel> weather = new List<WeatherModel>();
+        private readonly IWeatherService _weatherService;
+
+        public WeatherInfoController(IWeatherService weatherService)
+        {
+            _weatherService = weatherService;
+        }
         
         [HttpGet("{city}")]
-        public IActionResult GetCurrectWeather(string city)
+        public async Task<IActionResult> GetCurrectWeather(string city)
         {
-            string APIKey = "3c377bc6d28c8e7452d1c7c416b23f82";
-            using (WebClient web = new WebClient())
-            {
-                string url = string.Format("https://api.openweathermap.org/data/2.5/weather?q={0}&appid={1}", city, APIKey);
-                var json = web.DownloadString(url);
-                WeatherModel info = JsonConvert.DeserializeObject<WeatherModel>(json);
-                return Ok(info);
-            }
+            return Ok(await _weatherService.GetCurrectWeather(city));
         }
 
         [HttpPost]
-        public IActionResult AddCurrentWeather(WeatherModel newWeather)
+        public async Task<IActionResult> AddCurrentWeather(AddWeatherDto newWeather)
         {
-            //newWeather.Date = DateTime.UtcNow.Date;
-            weather.Add(newWeather);
-            return Ok(weather);
+            return Ok(await _weatherService.AddCurrentWeather(newWeather));
         }
 
         [HttpGet("GetWeatherPerMonth/{city}")]
-        public IActionResult GetWeatherPerMonth(string city)
+        public async Task<IActionResult> GetWeatherPerMonth(string city)
         {
-            return Ok(weather.Where(w => w.Date <= DateTime.Now.AddDays(-7) && w.Name == city));
+            return Ok(await _weatherService.GetWeatherPerMonth(city));
+        }
+
+        [HttpGet("GetWeatherPerWeek/{city}")]
+        public async Task<IActionResult> GetWeatherPerWeek(string city)
+        {
+            return Ok(await _weatherService.GetWeatherPerWeek(city));
+        }
+
+        [HttpGet("GetWeatherPerDay/{city}")]
+        public async Task<IActionResult> GetWeatherPerDay(string city)
+        {
+            return Ok(await _weatherService.GetWeatherPerDay(city));
         }
     }
 }

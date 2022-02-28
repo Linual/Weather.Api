@@ -1,8 +1,12 @@
-﻿namespace Weather.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Weather.Api.Models
 {
     public class Coord
     {
-        public double lon { get; set; } = 12.22;
-        public double lat { get; set; } = 51.12;
+        [Key]
+        public int Id { get; set; }
+        public double lon { get; set; }
+        public double lat { get; set; }
     }
 }

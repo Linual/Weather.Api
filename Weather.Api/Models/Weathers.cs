@@ -1,6 +1,6 @@
 ﻿namespace Weather.Api.Models
 {
-    public class Weather
+    public class Weathers
     {
         public int id { get; set; }
         public string main { get; set; }
