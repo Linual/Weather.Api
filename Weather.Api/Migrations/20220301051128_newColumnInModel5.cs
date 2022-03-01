@@ -2,7 +2,7 @@
 
 namespace Weather.Api.Migrations
 {
-    public partial class Migration6 : Migration
+    public partial class newColumnInModel5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

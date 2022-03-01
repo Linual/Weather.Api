@@ -11,10 +11,10 @@ namespace Weather.Api.Models
     {
         [Key]
         public int idWeather { get; set; }
-        public int CoordId { get; set; }
 
         [ForeignKey(nameof(CoordId))]
-        public virtual Coord Coord { get; set; } = new Coord();
+        public int? CoordId { get; set; }
+        public virtual Coord? Coord { get; set; }
         public virtual ICollection<Weathers> Weather { get; set; }
         public string Base { get; set; } = "";
         public virtual Main Main { get; set; }

@@ -10,8 +10,8 @@ using Weather.Api.Data;
 namespace Weather.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220228175749_SecondMigration")]
-    partial class SecondMigration
+    [Migration("20220301052009_newColumnInModel6")]
+    partial class newColumnInModel6
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,7 +38,7 @@ namespace Weather.Api.Migrations
 
             modelBuilder.Entity("Weather.Api.Models.Coord", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("CoordId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
@@ -49,7 +49,7 @@ namespace Weather.Api.Migrations
                     b.Property<double>("lon")
                         .HasColumnType("double precision");
 
-                    b.HasKey("id");
+                    b.HasKey("CoordId");
 
                     b.ToTable("Coord");
                 });
@@ -89,13 +89,16 @@ namespace Weather.Api.Migrations
 
             modelBuilder.Entity("Weather.Api.Models.Sys", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("SysId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
                     b.Property<string>("country")
                         .HasColumnType("text");
+
+                    b.Property<int>("id")
+                        .HasColumnType("integer");
 
                     b.Property<int>("sunrise")
                         .HasColumnType("integer");
@@ -106,7 +109,7 @@ namespace Weather.Api.Migrations
                     b.Property<int>("type")
                         .HasColumnType("integer");
 
-                    b.HasKey("id");
+                    b.HasKey("SysId");
 
                     b.ToTable("Sys");
                 });
@@ -127,7 +130,7 @@ namespace Weather.Api.Migrations
                     b.Property<int>("Cod")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Coordid")
+                    b.Property<int?>("CoordId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
@@ -145,7 +148,7 @@ namespace Weather.Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int?>("Sysid")
+                    b.Property<int>("SysId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Timezone")
@@ -161,11 +164,11 @@ namespace Weather.Api.Migrations
 
                     b.HasIndex("Cloudsid");
 
-                    b.HasIndex("Coordid");
+                    b.HasIndex("CoordId");
 
                     b.HasIndex("Mainid");
 
-                    b.HasIndex("Sysid");
+                    b.HasIndex("SysId");
 
                     b.HasIndex("Windid");
 
@@ -227,7 +230,7 @@ namespace Weather.Api.Migrations
 
                     b.HasOne("Weather.Api.Models.Coord", "Coord")
                         .WithMany()
-                        .HasForeignKey("Coordid");
+                        .HasForeignKey("CoordId");
 
                     b.HasOne("Weather.Api.Models.Main", "Main")
                         .WithMany()
@@ -235,7 +238,9 @@ namespace Weather.Api.Migrations
 
                     b.HasOne("Weather.Api.Models.Sys", "Sys")
                         .WithMany()
-                        .HasForeignKey("Sysid");
+                        .HasForeignKey("SysId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Weather.Api.Models.Wind", "Wind")
                         .WithMany()

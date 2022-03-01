@@ -9,6 +9,18 @@ namespace Weather.Api.Data
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder mb)
+        {
+            //mb.Entity<WeatherModel>()
+            //    .HasOne(b => b.Coord)
+            //    .WithMany()
+             //   .HasForeignKey(c => c.CoordId);
+
+            //mb.Entity<Coord>()
+            //    .HasKey(b => b.CoordId);
+
+            base.OnModelCreating(mb);
+        }
 
         public DbSet<WeatherModel> Weather { get; set; }
         public DbSet<Coord> Coord { get; set; }

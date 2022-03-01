@@ -46,8 +46,12 @@ namespace Weather.Api.Services
         public async Task<ServiceResponse<List<GetWeatherDto>>> GetWeatherPerDay(string city)
         {
             ServiceResponse<List<GetWeatherDto>> serviceResponse = new ServiceResponse<List<GetWeatherDto>>();
-            List<WeatherModel> dbWeather = await _context.Weather.ToListAsync();
-            serviceResponse.Data = (dbWeather.Select(c => _mapper.Map<GetWeatherDto>(c))).ToList();
+            //List<WeatherModel> dbWeather = await _context.Weather.Include(x => x.Coord).ToListAsync();
+            //serviceResponse.Data = (dbWeather.Select(c => _mapper.Map<GetWeatherDto>(c))).ToList();
+            _context.Weather.Include(nameof(Coord));
+            _context.Weather.Where(c => c.Name == city);
+            
+            serviceResponse.Data = (_context.Weather.Select(c => _mapper.Map<GetWeatherDto>(c))).ToList();
             return serviceResponse;
         }
 

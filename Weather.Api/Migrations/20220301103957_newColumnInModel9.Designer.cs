@@ -10,8 +10,8 @@ using Weather.Api.Data;
 namespace Weather.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220228185221_Migration5")]
-    partial class Migration5
+    [Migration("20220301103957_newColumnInModel9")]
+    partial class newColumnInModel9
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,7 +38,7 @@ namespace Weather.Api.Migrations
 
             modelBuilder.Entity("Weather.Api.Models.Coord", b =>
                 {
-                    b.Property<int>("CoordId")
+                    b.Property<int?>("CoordId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
@@ -130,7 +130,7 @@ namespace Weather.Api.Migrations
                     b.Property<int>("Cod")
                         .HasColumnType("integer");
 
-                    b.Property<int>("CoordId")
+                    b.Property<int?>("CoordId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
@@ -230,9 +230,7 @@ namespace Weather.Api.Migrations
 
                     b.HasOne("Weather.Api.Models.Coord", "Coord")
                         .WithMany()
-                        .HasForeignKey("CoordId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CoordId");
 
                     b.HasOne("Weather.Api.Models.Main", "Main")
                         .WithMany()

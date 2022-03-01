@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Weather.Api.Models;
 using Newtonsoft.Json;
 using System.Net;
+using System.Linq;
+using Weather.Api.Dtos.WeatherInfo;
+using Weather.Api.Services;
 
 namespace Weather.Api.Controllers
 {
-    using System.Linq;
-    using Weather.Api.Dtos.WeatherInfo;
-    using Weather.Api.Services;
 
     [ApiController]
     [Route("[controller]")]

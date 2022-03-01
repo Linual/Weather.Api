@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Weather.Api.Models;
 
 namespace Weather.Api.Dtos.WeatherInfo
 {
     public class GetWeatherDto
     {
+        [Key]
         public int idWeather { get; set; }
-        public virtual Coord Coord { get; set; }
+
+        [ForeignKey(nameof(CoordId))]
+        public int? CoordId { get; set; }
+        public virtual Coord? Coord { get; set; }
         public virtual ICollection<Weathers> Weather { get; set; }
         public string Base { get; set; }
         public virtual Main Main { get; set; }

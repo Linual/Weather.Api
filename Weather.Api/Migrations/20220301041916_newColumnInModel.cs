@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Weather.Api.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class newColumnInModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,14 +25,14 @@ namespace Weather.Api.Migrations
                 name: "Coord",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     lon = table.Column<double>(type: "double precision", nullable: false),
                     lat = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Coord", x => x.id);
+                    table.PrimaryKey("PK_Coord", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,16 +58,17 @@ namespace Weather.Api.Migrations
                 name: "Sys",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false)
+                    SysId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     type = table.Column<int>(type: "integer", nullable: false),
+                    id = table.Column<int>(type: "integer", nullable: false),
                     country = table.Column<string>(type: "text", nullable: true),
                     sunrise = table.Column<int>(type: "integer", nullable: false),
                     sunset = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sys", x => x.id);
+                    table.PrimaryKey("PK_Sys", x => x.SysId);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,25 +90,25 @@ namespace Weather.Api.Migrations
                 name: "Weather",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    idWeather = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    idWeather = table.Column<int>(type: "integer", nullable: false),
-                    Coordid = table.Column<int>(type: "integer", nullable: true),
+                    CoordId = table.Column<int>(type: "integer", nullable: true),
                     Base = table.Column<string>(type: "text", nullable: true),
                     Mainid = table.Column<int>(type: "integer", nullable: true),
                     Visibility = table.Column<int>(type: "integer", nullable: false),
                     Windid = table.Column<int>(type: "integer", nullable: true),
                     Cloudsid = table.Column<int>(type: "integer", nullable: true),
                     Dt = table.Column<int>(type: "integer", nullable: false),
-                    Sysid = table.Column<int>(type: "integer", nullable: true),
+                    SysId = table.Column<int>(type: "integer", nullable: false),
                     Timezone = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Cod = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Weather", x => x.Id);
+                    table.PrimaryKey("PK_Weather", x => x.idWeather);
                     table.ForeignKey(
                         name: "FK_Weather_Clouds_Cloudsid",
                         column: x => x.Cloudsid,
@@ -115,10 +116,10 @@ namespace Weather.Api.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Weather_Coord_Coordid",
-                        column: x => x.Coordid,
+                        name: "FK_Weather_Coord_CoordId",
+                        column: x => x.CoordId,
                         principalTable: "Coord",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Weather_Main_Mainid",
@@ -127,11 +128,11 @@ namespace Weather.Api.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Weather_Sys_Sysid",
-                        column: x => x.Sysid,
+                        name: "FK_Weather_Sys_SysId",
+                        column: x => x.SysId,
                         principalTable: "Sys",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "SysId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Weather_Wind_Windid",
                         column: x => x.Windid,
@@ -149,16 +150,16 @@ namespace Weather.Api.Migrations
                     main = table.Column<string>(type: "text", nullable: true),
                     description = table.Column<string>(type: "text", nullable: true),
                     icon = table.Column<string>(type: "text", nullable: true),
-                    WeatherModelId = table.Column<int>(type: "integer", nullable: true)
+                    WeatherModelidWeather = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Weathers", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Weathers_Weather_WeatherModelId",
-                        column: x => x.WeatherModelId,
+                        name: "FK_Weathers_Weather_WeatherModelidWeather",
+                        column: x => x.WeatherModelidWeather,
                         principalTable: "Weather",
-                        principalColumn: "Id",
+                        principalColumn: "idWeather",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -168,9 +169,9 @@ namespace Weather.Api.Migrations
                 column: "Cloudsid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Weather_Coordid",
+                name: "IX_Weather_CoordId",
                 table: "Weather",
-                column: "Coordid");
+                column: "CoordId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Weather_Mainid",
@@ -178,9 +179,9 @@ namespace Weather.Api.Migrations
                 column: "Mainid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Weather_Sysid",
+                name: "IX_Weather_SysId",
                 table: "Weather",
-                column: "Sysid");
+                column: "SysId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Weather_Windid",
@@ -188,9 +189,9 @@ namespace Weather.Api.Migrations
                 column: "Windid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Weathers_WeatherModelId",
+                name: "IX_Weathers_WeatherModelidWeather",
                 table: "Weathers",
-                column: "WeatherModelId");
+                column: "WeatherModelidWeather");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
