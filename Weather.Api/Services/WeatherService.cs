@@ -33,7 +33,7 @@ namespace Weather.Api.Services
 
             using (WebClient web = new WebClient())
             {
-                string url = string.Format("https://api.openweathermap.org/data/2.5/weather?q={0}&appid={1}", city, APIKey);
+                string url = string.Format(config["OpenWeatherMap:Url"], city, APIKey);
                 var json = web.DownloadString(url);
                 GetWeatherDto info = JsonConvert.DeserializeObject<GetWeatherDto>(json);
                 serviceResponse.Data = info;
@@ -53,7 +53,25 @@ namespace Weather.Api.Services
                                         .Include(x => x.Sys)
                                         .Include(x => x.Weather)
                                         .Include(x => x.Wind)
-                                        .Where(c => c.Name == city && c.Date <= DateTime.Now.AddDays(-1))
+                                        .Where(c => c.Name == city && DateTime.Compare(c.Date, DateTime.Today.AddDays(-1)) >= 0)
+                                        .Select(c => _mapper.Map<GetWeatherDto>(c))
+                                        .ToListAsync();
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetWeatherDto>>> GetWeatherPerWeek(string city)
+        {
+            ServiceResponse<List<GetWeatherDto>> serviceResponse = new ServiceResponse<List<GetWeatherDto>>();
+
+            serviceResponse.Data = await _context.Weather
+                                        .Include(x => x.Coord)
+                                        .Include(x => x.Clouds)
+                                        .Include(x => x.Main)
+                                        .Include(x => x.Sys)
+                                        .Include(x => x.Weather)
+                                        .Include(x => x.Wind)
+                                        .Where(c => c.Name == city && DateTime.Compare(c.Date, DateTime.Today.AddDays(-7)) >= 0)
+                                        .OrderBy(x => x.Date)
                                         .Select(c => _mapper.Map<GetWeatherDto>(c))
                                         .ToListAsync();
             return serviceResponse;
@@ -70,24 +88,8 @@ namespace Weather.Api.Services
                                         .Include(x => x.Sys)
                                         .Include(x => x.Weather)
                                         .Include(x => x.Wind)
-                                        .Where(c => c.Name == city && c.Date <= DateTime.Now.AddDays(-30))
-                                        .Select(c => _mapper.Map<GetWeatherDto>(c))
-                                        .ToListAsync();
-            return serviceResponse;
-        }
-
-        public async Task<ServiceResponse<List<GetWeatherDto>>> GetWeatherPerWeek(string city)
-        {
-            ServiceResponse<List<GetWeatherDto>> serviceResponse = new ServiceResponse<List<GetWeatherDto>>();
-            
-            serviceResponse.Data = await _context.Weather
-                                        .Include(x => x.Coord)
-                                        .Include(x => x.Clouds)
-                                        .Include(x => x.Main)
-                                        .Include(x => x.Sys)
-                                        .Include(x => x.Weather)
-                                        .Include(x => x.Wind)
-                                        .Where(c => c.Name == city && c.Date <= DateTime.Now.AddDays(-7))
+                                        .Where(c => c.Name == city && DateTime.Compare(c.Date, DateTime.Today.AddMonths(-1)) >= 0)
+                                        .OrderBy(x => x.Date)
                                         .Select(c => _mapper.Map<GetWeatherDto>(c))
                                         .ToListAsync();
             return serviceResponse;
