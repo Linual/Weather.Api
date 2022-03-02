@@ -36,6 +36,7 @@ namespace Weather.Api.Services
                 string url = string.Format(config["OpenWeatherMap:Url"], city, APIKey);
                 var json = web.DownloadString(url);
                 GetWeatherDto info = JsonConvert.DeserializeObject<GetWeatherDto>(json);
+                info.Date = DateTime.Now;
                 serviceResponse.Data = info;
 
                 return serviceResponse;
