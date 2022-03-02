@@ -105,8 +105,13 @@ namespace Weather.Api.Services
             await _context.SaveChangesAsync();
 
             serviceResponse.Data = await _context.Weather
-                                        .Select(c => _mapper
-                                        .Map<GetWeatherDto>(c))
+                                        .Include(x => x.Coord)
+                                        .Include(x => x.Clouds)
+                                        .Include(x => x.Main)
+                                        .Include(x => x.Sys)
+                                        .Include(x => x.Weather)
+                                        .Include(x => x.Wind)
+                                        .Select(c => _mapper.Map<GetWeatherDto>(c))
                                         .ToListAsync();
             return serviceResponse;
         }
