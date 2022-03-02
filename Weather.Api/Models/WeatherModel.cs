@@ -14,18 +14,30 @@ namespace Weather.Api.Models
 
         [ForeignKey(nameof(CoordId))]
         public int? CoordId { get; set; }
-        public virtual Coord? Coord { get; set; }
-        public virtual ICollection<Weathers> Weather { get; set; }
-        public string Base { get; set; } = "";
-        public virtual Main Main { get; set; }
+        public Coord Coord { get; set; }
+
+        [ForeignKey(nameof(WeatherId))]
+        public int? WeatherId { get; set; }
+        public ICollection<Weathers> Weather { get; set; }
+        public string Base { get; set; }
+
+        [ForeignKey(nameof(MainId))]
+        public int? MainId { get; set; }
+        public Main Main { get; set; }
         public int Visibility { get; set; }
-        public virtual Wind Wind { get; set; } 
-        public virtual Clouds Clouds { get; set; }
+
+        [ForeignKey(nameof(WindId))]
+        public int? WindId { get; set; }
+        public Wind Wind { get; set; }
+
+        [ForeignKey(nameof(CloudsId))]
+        public int? CloudsId { get; set; }
+        public Clouds Clouds { get; set; }
         public int Dt { get; set; }
-        public int SysId { get; set; }
 
         [ForeignKey(nameof(SysId))]
-        public virtual Sys Sys { get; set; }
+        public int? SysId { get; set; }
+        public Sys Sys { get; set; }
         public int Timezone { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }

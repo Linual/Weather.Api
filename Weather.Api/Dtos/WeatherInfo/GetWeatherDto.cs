@@ -8,20 +8,15 @@ namespace Weather.Api.Dtos.WeatherInfo
 {
     public class GetWeatherDto
     {
-        [Key]
-        public int idWeather { get; set; }
-
-        [ForeignKey(nameof(CoordId))]
-        public int? CoordId { get; set; }
-        public virtual Coord? Coord { get; set; }
-        public virtual ICollection<Weathers> Weather { get; set; }
+        public GetCoordDto Coord { get; set; }
+        public ICollection<GetWeathersDto> Weather { get; set; }
         public string Base { get; set; }
-        public virtual Main Main { get; set; }
+        public GetMainDto Main { get; set; }
         public int Visibility { get; set; }
-        public virtual Wind Wind { get; set; }
-        public virtual Clouds Clouds { get; set; }
+        public GetWindDto Wind { get; set; }
+        public GetCloudsDto Clouds { get; set; }
         public int Dt { get; set; }
-        public virtual Sys Sys { get; set; }
+        public GetSysDto Sys { get; set; }
         public int Timezone { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }

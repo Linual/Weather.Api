@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Weather.Api.Models
+namespace Weather.Api.Dtos.WeatherInfo
 {
-    public class Wind
+    public class GetWindDto
     {
-        [Key]
-        public int WindId { get; set; }
         public int id { get; set; }
         public double speed { get; set; }
         public int deg { get; set; }

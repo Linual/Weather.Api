@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Weather.Api.Models
+namespace Weather.Api.Dtos.WeatherInfo
 {
-    public class Weathers
+    public class GetWeathersDto
     {
-        [Key]
-        public int WeatherId { get; set; }
         public int id { get; set; }
         public string main { get; set; }
         public string description { get; set; }
